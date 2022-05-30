@@ -5,7 +5,6 @@
 ### maven
 
 ```xml
-
 <dependency>
     <groupId>io.github.liyang920716</groupId>
     <artifactId>mybatis-plus-domain-plugin-spring-boot-starter</artifactId>
@@ -17,8 +16,8 @@
 
 ```xml
 domain:
-        domain-name: http://www.baidu.com #域名
-        enable: true #默认为false不开启
+    domain-name: http://www.baidu.com #域名
+    enable: true #默认为false不开启
 ```
 
 ## 2.使用方法
