@@ -132,7 +132,89 @@ public class DomainPlugin implements Interceptor {
                 Object o1 = declaredField.get(index);
                 if (o1 != null && o1 instanceof String) {
                     declaredField.set(index, o1.toString().replaceAll(REGEX_BASE_URL, domain));
+                    continue;
                 }
+                selectRecursionHandle(o1);
+            }
+        }
+    }
+
+    public void selectRecursionHandle(Object o) throws Exception {
+        if (o instanceof List) {
+            List<Object> list = (List<Object>) o;
+            if (list.isEmpty()) {
+                return;
+            }
+            Object oList = list.get(0);
+            if (oList == null) {
+                return;
+            }
+            Class<?> aClass = oList.getClass();
+            if (!aClass.isAnnotationPresent(Domain.class)) {
+                return;
+            }
+            Field[] declaredFields = null;
+            if (classField.containsKey(aClass.getName())) {
+                declaredFields = classField.get(aClass.getName());
+            } else {
+                declaredFields = FieldUtils.getAllFields(aClass);
+                classField.put(aClass.getName(), declaredFields);
+            }
+            Field[] resultFields = new Field[]{};
+            for (Field declaredField : declaredFields) {
+                if (declaredField.isAnnotationPresent(DomainField.class)) {
+                    resultFields = Arrays.copyOf(resultFields, resultFields.length + 1);
+                    resultFields[resultFields.length - 1] = declaredField;
+                }
+            }
+            if (resultFields.length == 0) {
+                return;
+            }
+            for (Object index : list) {
+                for (Field declaredField : resultFields) {
+                    declaredField.setAccessible(true);
+                    Object o1 = declaredField.get(index);
+                    if (o1 != null && o1 instanceof String) {
+                        declaredField.set(index, o1.toString().replaceAll(REGEX_BASE_URL, domain));
+                        continue;
+                    }
+                    selectRecursionHandle(o1);
+                }
+            }
+        } else {
+            Class<?> aClass = o.getClass();
+            if (!aClass.isAnnotationPresent(Domain.class)) {
+                return;
+            }
+            Field[] declaredFields = null;
+            if (classField.containsKey(aClass.getName())) {
+                declaredFields = classField.get(aClass.getName());
+            } else {
+                declaredFields = FieldUtils.getAllFields(aClass);
+                classField.put(aClass.getName(), declaredFields);
+            }
+            Field[] resultFields = new Field[]{};
+            for (Field declaredField : declaredFields) {
+                if (declaredField.isAnnotationPresent(DomainField.class)) {
+                    resultFields = Arrays.copyOf(resultFields, resultFields.length + 1);
+                    resultFields[resultFields.length - 1] = declaredField;
+                }
+            }
+            if (resultFields.length == 0) {
+                return;
+            }
+            for (Field resultField : resultFields) {
+                resultField.setAccessible(true);
+                Object o1 = resultField.get(o);
+                if (o1 != null && o1 instanceof List) {
+                    selectRecursionHandle(o1);
+                    continue;
+                }
+                if (o1 != null && o1 instanceof String) {
+                    resultField.set(o, o1.toString().replaceAll(REGEX_BASE_URL, domain));
+                    continue;
+                }
+                selectRecursionHandle(o1);
             }
         }
     }
