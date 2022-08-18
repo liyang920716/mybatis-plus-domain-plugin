@@ -130,11 +130,13 @@ public class DomainPlugin implements Interceptor {
             for (Field declaredField : resultFields) {
                 declaredField.setAccessible(true);
                 Object o1 = declaredField.get(index);
-                if (o1 != null && o1 instanceof String) {
-                    declaredField.set(index, o1.toString().replaceAll(REGEX_BASE_URL, domain));
-                    continue;
+                if (o1 != null) {
+                    if (o1 instanceof String) {
+                        declaredField.set(index, o1.toString().replaceAll(REGEX_BASE_URL, domain));
+                        continue;
+                    }
+                    selectRecursionHandle(o1);
                 }
-                selectRecursionHandle(o1);
             }
         }
     }
@@ -174,11 +176,13 @@ public class DomainPlugin implements Interceptor {
                 for (Field declaredField : resultFields) {
                     declaredField.setAccessible(true);
                     Object o1 = declaredField.get(index);
-                    if (o1 != null && o1 instanceof String) {
-                        declaredField.set(index, o1.toString().replaceAll(REGEX_BASE_URL, domain));
-                        continue;
+                    if (o1 != null) {
+                        if (o1 instanceof String) {
+                            declaredField.set(index, o1.toString().replaceAll(REGEX_BASE_URL, domain));
+                            continue;
+                        }
+                        selectRecursionHandle(o1);
                     }
-                    selectRecursionHandle(o1);
                 }
             }
         } else {
@@ -206,15 +210,17 @@ public class DomainPlugin implements Interceptor {
             for (Field resultField : resultFields) {
                 resultField.setAccessible(true);
                 Object o1 = resultField.get(o);
-                if (o1 != null && o1 instanceof List) {
+                if (o1 != null) {
+                    if (o1 instanceof List) {
+                        selectRecursionHandle(o1);
+                        continue;
+                    }
+                    if (o1 instanceof String) {
+                        resultField.set(o, o1.toString().replaceAll(REGEX_BASE_URL, domain));
+                        continue;
+                    }
                     selectRecursionHandle(o1);
-                    continue;
                 }
-                if (o1 != null && o1 instanceof String) {
-                    resultField.set(o, o1.toString().replaceAll(REGEX_BASE_URL, domain));
-                    continue;
-                }
-                selectRecursionHandle(o1);
             }
         }
     }
