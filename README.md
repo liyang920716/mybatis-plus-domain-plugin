@@ -8,7 +8,7 @@
 <dependency>
     <groupId>io.github.liyang920716</groupId>
     <artifactId>mybatis-plus-domain-plugin-spring-boot-starter</artifactId>
-    <version>1.2</version>
+    <version>1.2.2</version>
 </dependency>
 ```
 
