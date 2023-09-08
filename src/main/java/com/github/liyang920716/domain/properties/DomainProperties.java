@@ -1,5 +1,6 @@
 package com.github.liyang920716.domain.properties;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DomainProperties {
 
     private String domainName;
+    @Value(value = "${domain.enable:false}")
     private boolean enable;
 
     public String getDomainName() {
