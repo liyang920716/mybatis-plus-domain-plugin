@@ -52,9 +52,9 @@ import java.util.regex.Pattern;
 public class DomainPlugin implements Interceptor {
 
     private String domain;
-    private static final ConcurrentHashMap<String, Field[]> classField = new ConcurrentHashMap<>();
-    private static String REGEX_BASE_URL = "\\$\\{baseUrl}";
-    private static String REGEX_VAL = "(.*?)=#\\{ew.[a-zA-Z]+.(.*?)}";
+    private static final ConcurrentHashMap<String, Field[]> CLASS_FIELD = new ConcurrentHashMap<>();
+    private static final String REGEX_BASE_URL = "\\$\\{baseUrl}";
+    private static final String REGEX_VAL = "(.*?)=#\\{ew.[a-zA-Z]+.(.*?)}";
 
     public DomainPlugin(String domain) {
         this.domain = domain;
@@ -110,11 +110,11 @@ public class DomainPlugin implements Interceptor {
             return;
         }
         Field[] declaredFields = null;
-        if (classField.containsKey(aClass.getName())) {
-            declaredFields = classField.get(aClass.getName());
+        if (CLASS_FIELD.containsKey(aClass.getName())) {
+            declaredFields = CLASS_FIELD.get(aClass.getName());
         } else {
             declaredFields = FieldUtils.getAllFields(aClass);
-            classField.put(aClass.getName(), declaredFields);
+            CLASS_FIELD.put(aClass.getName(), declaredFields);
         }
         Field[] resultFields = new Field[]{};
         for (Field declaredField : declaredFields) {
@@ -156,11 +156,11 @@ public class DomainPlugin implements Interceptor {
                 return;
             }
             Field[] declaredFields = null;
-            if (classField.containsKey(aClass.getName())) {
-                declaredFields = classField.get(aClass.getName());
+            if (CLASS_FIELD.containsKey(aClass.getName())) {
+                declaredFields = CLASS_FIELD.get(aClass.getName());
             } else {
                 declaredFields = FieldUtils.getAllFields(aClass);
-                classField.put(aClass.getName(), declaredFields);
+                CLASS_FIELD.put(aClass.getName(), declaredFields);
             }
             Field[] resultFields = new Field[]{};
             for (Field declaredField : declaredFields) {
@@ -191,11 +191,11 @@ public class DomainPlugin implements Interceptor {
                 return;
             }
             Field[] declaredFields = null;
-            if (classField.containsKey(aClass.getName())) {
-                declaredFields = classField.get(aClass.getName());
+            if (CLASS_FIELD.containsKey(aClass.getName())) {
+                declaredFields = CLASS_FIELD.get(aClass.getName());
             } else {
                 declaredFields = FieldUtils.getAllFields(aClass);
-                classField.put(aClass.getName(), declaredFields);
+                CLASS_FIELD.put(aClass.getName(), declaredFields);
             }
             Field[] resultFields = new Field[]{};
             for (Field declaredField : declaredFields) {
@@ -248,11 +248,11 @@ public class DomainPlugin implements Interceptor {
             return;
         }
         Field[] declaredFields = null;
-        if (classField.containsKey(aClass.getName())) {
-            declaredFields = classField.get(aClass.getName());
+        if (CLASS_FIELD.containsKey(aClass.getName())) {
+            declaredFields = CLASS_FIELD.get(aClass.getName());
         } else {
             declaredFields = FieldUtils.getAllFields(aClass);
-            classField.put(aClass.getName(), declaredFields);
+            CLASS_FIELD.put(aClass.getName(), declaredFields);
         }
         for (Field declaredField : declaredFields) {
             if (declaredField.isAnnotationPresent(DomainField.class)) {
@@ -283,11 +283,11 @@ public class DomainPlugin implements Interceptor {
                     return;
                 }
                 Field[] declaredFields = null;
-                if (classField.containsKey(aClass.getName())) {
-                    declaredFields = classField.get(aClass.getName());
+                if (CLASS_FIELD.containsKey(aClass.getName())) {
+                    declaredFields = CLASS_FIELD.get(aClass.getName());
                 } else {
                     declaredFields = FieldUtils.getAllFields(aClass);
-                    classField.put(aClass.getName(), declaredFields);
+                    CLASS_FIELD.put(aClass.getName(), declaredFields);
                 }
                 for (Field declaredField : declaredFields) {
                     if (declaredField.isAnnotationPresent(DomainField.class)) {
@@ -317,11 +317,11 @@ public class DomainPlugin implements Interceptor {
                         valMap.put(Pattern.compile(REGEX_VAL).matcher(s1).group(1), Pattern.compile(REGEX_VAL).matcher(s1).group(2));
                     }
                     Field[] declaredFields = null;
-                    if (classField.containsKey(entityClass.getName())) {
-                        declaredFields = classField.get(entityClass.getName());
+                    if (CLASS_FIELD.containsKey(entityClass.getName())) {
+                        declaredFields = CLASS_FIELD.get(entityClass.getName());
                     } else {
                         declaredFields = FieldUtils.getAllFields(entityClass);
-                        classField.put(entityClass.getName(), declaredFields);
+                        CLASS_FIELD.put(entityClass.getName(), declaredFields);
                     }
                     Map<String, Object> paramNameValuePairs = lambdaUpdateWrapper.getParamNameValuePairs();
                     for (Field declaredField : declaredFields) {
@@ -340,11 +340,11 @@ public class DomainPlugin implements Interceptor {
                         return;
                     }
                     Field[] declaredFields = null;
-                    if (classField.containsKey(aClass.getName())) {
-                        declaredFields = classField.get(aClass.getName());
+                    if (CLASS_FIELD.containsKey(aClass.getName())) {
+                        declaredFields = CLASS_FIELD.get(aClass.getName());
                     } else {
                         declaredFields = FieldUtils.getAllFields(aClass);
-                        classField.put(aClass.getName(), declaredFields);
+                        CLASS_FIELD.put(aClass.getName(), declaredFields);
                     }
                     for (Field declaredField : declaredFields) {
                         if (declaredField.isAnnotationPresent(DomainField.class)) {
@@ -362,11 +362,11 @@ public class DomainPlugin implements Interceptor {
                         return;
                     }
                     Field[] declaredFields = null;
-                    if (classField.containsKey(aClass.getName())) {
-                        declaredFields = classField.get(aClass.getName());
+                    if (CLASS_FIELD.containsKey(aClass.getName())) {
+                        declaredFields = CLASS_FIELD.get(aClass.getName());
                     } else {
                         declaredFields = FieldUtils.getAllFields(aClass);
-                        classField.put(aClass.getName(), declaredFields);
+                        CLASS_FIELD.put(aClass.getName(), declaredFields);
                     }
                     for (Field declaredField : declaredFields) {
                         if (declaredField.isAnnotationPresent(DomainField.class)) {
@@ -391,11 +391,11 @@ public class DomainPlugin implements Interceptor {
                     return;
                 }
                 Field[] declaredFields = null;
-                if (classField.containsKey(aClass.getName())) {
-                    declaredFields = classField.get(aClass.getName());
+                if (CLASS_FIELD.containsKey(aClass.getName())) {
+                    declaredFields = CLASS_FIELD.get(aClass.getName());
                 } else {
                     declaredFields = FieldUtils.getAllFields(aClass);
-                    classField.put(aClass.getName(), declaredFields);
+                    CLASS_FIELD.put(aClass.getName(), declaredFields);
                 }
                 for (Field declaredField : declaredFields) {
                     if (declaredField.isAnnotationPresent(DomainField.class)) {
